@@ -1,0 +1,39 @@
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+
+# Define the input data
+emails = np.array([[0, 1, 1, 0, 1, 0], [1, 0, 0, 1, 0, 1], [0, 1, 0, 0, 1, 1], [1, 1, 1, 1, 0, 1]])
+
+# Define the output data
+labels = np.array([0, 1, 0, 1])
+
+# Create a sequential model
+model = Sequential()
+
+# Add input layer with 6 neurons and ReLU activation function
+model.add(Dense(6, input_shape=(6,), activation='relu'))
+
+# Add hidden layer with 4 neurons and ReLU activation function
+model.add(Dense(4, activation='relu'))
+
+# Add dropout layer to prevent overfitting
+model.add(Dropout(0.2))
+
+# Add output layer with 1 neuron and sigmoid activation function
+model.add(Dense(1, activation='sigmoid'))
+
+# Compile the model with binary crossentropy loss function and Adam optimizer
+model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=0.001), metrics=['accuracy'])
+
+# Fit the model to the input and output data for 100 epochs
+history = model.fit(emails, labels, epochs=100, verbose=1)
+
+# Evaluate the model on the input and output data
+score = model.evaluate(emails, labels, verbose=0)
+
+# Print the model's accuracy
+print('Accuracy:', score[1])
